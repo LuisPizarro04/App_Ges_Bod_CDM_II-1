@@ -1,0 +1,152 @@
+var tblRecursos;
+var vents = {
+    items: {
+        solicitante: '',
+        fecha_solicitud: '',
+        recursos: []
+    },
+    add: function (item) {
+        this.items.recursos.push(item);
+        this.list();
+    },
+    list: function () {
+        tblRecursos = $('#tblRecursos').DataTable({
+            responsive: true,
+            autoWidth: false,
+            destroy: true,
+            data: this.items.recursos,
+            columns: [
+                {"data": "id"},
+                {"data": "nombre_producto"},
+                {"data": "id_centro_costo"},
+                {"data": "cantidad"},
+            ],
+            columnDefs: [
+                {
+                    targets: [0],
+                    class: 'text-center',
+                    orderable: false,
+                    render: function (data, type, row) {
+                        return '<a rel="remove" class="btn btn-danger btn-xs btn-flat" style="color: white;"><i class="fas fa-trash-alt"></i></a>';
+                    }
+                },
+                {
+                    targets: [-1],
+                    class: 'text-center',
+                    orderable: false,
+                    render: function (data, type, row) {
+                        return '<input type="text" name="cant" class="form-control form-control-sm input-sm" autocomplete="off" value="' + row.cant + '">';
+                    }
+                },
+            ],
+            rowCallback(row, data, displayNum, displayIndex, dataIndex) {
+
+                $(row).find('input[name="cant"]').TouchSpin({
+                    min: 1,
+                    max: 1000000000,
+                    step: 1
+                });
+
+            },
+            initComplete: function (settings, json) {
+
+            }
+        });
+    },
+};
+
+    $('input[name="search"]').autocomplete({
+        source: function (request, response) {
+            $.ajax({
+                url: window.location.pathname,
+                type: 'POST',
+                data: {
+                    'action': 'search_recursos',
+                    'term': request.term
+                },
+                dataType: 'json',
+            }).done(function (data) {
+                response(data);
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                //alert(textStatus + ': ' + errorThrown);
+            }).always(function (data) {
+
+            });
+        },
+        delay: 500,
+        minLength: 1,
+        select: function (event, ui) {
+            event.preventDefault();
+            console.clear();
+            ui.item.cant = 1;
+            console.log(vents.items);
+            vents.add(ui.item);
+            $(this).val('');
+        }
+    });
+
+    $('.btnRemoveAll').on('click', function () {
+        if (vents.items.recursos.length === 0) return false;
+        alert_action('Notificación', '¿Estas seguro de eliminar todos los items de tu detalle?', function () {
+            vents.items.recursos = [];
+            vents.list();
+        });
+    });
+
+    // event cant
+    $('#tblRecursos tbody')
+        .on('click', 'a[rel="remove"]', function () {
+            var tr = tblRecursos.cell($(this).closest('td, li')).index();
+            alert_action('Notificación', '¿Estas seguro de eliminar el producto de tu detalle?', function () {
+                vents.items.recursos.splice(tr.row, 1);
+                vents.list();
+            });
+        })
+        .on('change', 'input[name="cant"]', function () {
+            console.clear();
+            var cant = parseInt($(this).val());
+            var tr = tblRecursos.cell($(this).closest('td, li')).index();
+            vents.items.recursos[tr.row].cant = cant;
+        });
+
+    $('.btnClearSearch').on('click', function () {
+        $('input[name="search"]').val('').focus();
+    });
+
+    // event submit
+    $('form').on('submit', function (e) {
+        e.preventDefault();
+
+        if(vents.items.recursos.length === 0){
+            message_error('Debe al menos tener un item en su detalle de venta');
+            return false;
+        }
+
+        vents.items.fecha_solicitud = $('input[name="fecha_solicitud"]').val();
+        vents.items.cli = $('select[name="cli"]').val();
+        var parameters = new FormData();
+        parameters.append('action', $('input[name="action"]').val());
+        parameters.append('vents', JSON.stringify(vents.items));
+        submit_with_ajax(window.location.pathname, 'Notificación', '¿Estas seguro de realizar la siguiente acción?', parameters, function () {
+            location.href = 'templates/index';
+        });
+    });
+
+    vents.list();
+});
+
+
+            """elif action == 'add':
+                with transaction.atomic():
+                    vents = json.loads(request.POST['vents'])
+                    sol = Solicitud()
+                    sol.fecha_solicitud = vents['fecha_solicitud']
+                    sol.solicitante = vents['solicitante']
+                    sol.save()
+                    for i in vents['products']:
+                        det = Solicitud_Recurso()
+                        det.id_solicitud = sol.id_solicitud
+                        det.id_recurso = i['id']
+                        det.cantidad_solicitada = int(i['cant'])
+                        det.id_centro_costo = i['centro_costo']
+                        det.save()"""
