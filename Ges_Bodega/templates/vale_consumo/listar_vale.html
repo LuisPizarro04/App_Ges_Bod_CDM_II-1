@@ -17,6 +17,10 @@
                 <th scope="col">N° Vale</th>
                 <th scope="col">Solicitante</th>
                 <th scope="col">Fecha Solicitud</th>
+                <th scope="col">Uni. Negocio</th>
+                <th scope="col">Centro de Cst</th>
+                <th scope="col">Edificio</th>
+                <th scope="col">Piso</th>
                 <th scope="col">Estado Solicitud</th>
               </tr>
             </thead>
@@ -26,6 +30,10 @@
                 <th>{{solicitud.id_solicitud}}</th>
                 <td>{{solicitud.solicitante}}</td>
                 <td>{{solicitud.fecha_solicitud}}</td>
+                <td>{{solicitud.unidad_negocio}}</td>
+                <td>{{solicitud.id_centro_costo}}</td>
+                <td>{{solicitud.edificio}}</td>
+                <td>{{solicitud.piso}}</td>
                 <td>{{solicitud.estado_solicitud}}</td>
               </tr>
               {% endfor %}

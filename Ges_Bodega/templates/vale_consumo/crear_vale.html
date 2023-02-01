@@ -94,6 +94,7 @@
             <div class="card-body">
 
               <form method="post">
+                <div></div>
 
               <div class="example">
                 <ul class="nav nav-tabs" role="tablist">
@@ -103,21 +104,37 @@
                       </svg>Datos de la Solicitud</a></li>
                 </ul>
                 <div class="tab-content rounded-bottom">
-
                   <div class="tab-pane p-3 active preview" role="tabpanel" id="preview-719">
                     <input type="hidden" name="action" value="{{ action }}">
+                  
                     <div class="mb-3">
-                      <label class="form-label" for="exampleFormControlInput1">{{user.name_user}}</label>
-                      {{form.solicitante}}
+                      <!--<label class="form-label" for="exampleFormControlInput1">Solicitante</label>-->
+                      <input type="hidden" name="solicitante" value={{user.id}} class="form-control">
                     </div>
-
+                    <h3>Solicitante: {{user.nombres}} {{user.apellidos}}</h3>
                     <div class="mb-3">
-                      <label class="form-label" for="exampleFormControlInput1">Fecha Solicitud</label>
+                      <label class="form-label" for="exampleFormControlInput1">Fecha solicitud</label>
                       {{form.fecha_solicitud}}
-                    </div>      
-
-                  </div>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label" for="exampleFormControlInput1">Unidad de negocio</label>
+                      {{form.unidad_negocio}}
+                    </div> 
+                    <div class="mb-3">
+                      <label class="form-label" for="exampleFormControlInput1">Centro de costo</label>
+                      {{form.id_centro_costo}}
+                    </div> 
+                    <div class="mb-3">
+                      <label class="form-label" for="exampleFormControlInput1">Edificio</label>
+                      {{form.edificio}}
+                    </div> 
+                    <div class="mb-3">
+                      <label class="form-label" for="exampleFormControlInput1">Piso</label>
+                      {{form.piso}}
+                    </div> 
+                  
                 </div>
+                
                 <ul class="nav nav-tabs" role="tablist">
                   <li class="nav-item"><a class="nav-link active" data-coreui-toggle="tab" href="#preview-719" role="tab">
                       <svg class="icon me-2">
