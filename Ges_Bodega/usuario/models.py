@@ -22,12 +22,26 @@ class UsuarioManager(BaseUserManager):
     def create_superuser(self, username, email, nombres, password=None, **extra_fields):
         return self._create_user(username, email, nombres, password, True, True, **extra_fields)
 
+grupo_1 = 'OT'
+grupo_2 = 'SP'
+grupo_3 = 'PP'
+grupo_4 = 'JB'
+
+GRUPO_CHOICES = [(grupo_1, 'Oficina Técnica'), 
+                (grupo_2, 'Supervisor'),
+                (grupo_3, 'Preparador'), 
+                (grupo_4, 'Jefe de Bodega'),]
+
+
+
+
 
 class Usuario(AbstractBaseUser, PermissionsMixin):
     username = models.CharField('Nombre de usuario', unique=True, max_length=150)
     email = models.EmailField('Correo electrónico', max_length=254, unique=True)
     nombres = models.CharField(' Nombres', max_length=200, blank=True, null=True)
     apellidos = models.CharField('Apellidos', max_length=200, blank=True, null=True)
+    grupo = models.CharField(max_length=40, blank=False, null=False, choices=GRUPO_CHOICES, default="") 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
@@ -37,7 +51,7 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ['email', 'nombres', 'apellidos']
 
     def __str__(self):
-        return f'{self.nombres}, {self.apellidos}'
+        return self.grupo+":"+self.nombres + " " +self.apellidos
 
     
 

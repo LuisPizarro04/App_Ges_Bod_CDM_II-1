@@ -86,10 +86,23 @@ class Recurso (models.Model):
 estado_1 = 'Pendiente'
 estado_2 = 'Entregado'
 estado_3 = 'Rechazado'
+estado_4 = 'LE'
 
 ESTADOS_CHOICES = [(estado_1, 'Pendiente'), 
                 (estado_2, 'Entregado'), 
-                (estado_3, 'Rechazado'), ]  
+                (estado_3, 'Rechazado'),
+                (estado_4, 'Listo paa entrega'), ]
+
+obs_1 = 'Observación 1'
+obs_2 = 'Observación 2'
+obs_3 = 'Observación 3'
+obs_4 = 'Observación 4'
+
+OBSERVACIONES_CHOICES = [(obs_1, 'Observación 1'), 
+                (obs_2, 'Observación 2'), 
+                (obs_3, 'Observación 3'),
+                (obs_4, 'Observación 4'), ]
+
 class Solicitud (models.Model):
     id_solicitud = models.AutoField(primary_key=True)
     solicitante = models.ForeignKey(Usuario, on_delete=models.CASCADE)
@@ -98,9 +111,10 @@ class Solicitud (models.Model):
     id_centro_costo = models.ForeignKey(Centro_Costo, on_delete=models.CASCADE)
     edificio = models.IntegerField()
     piso = models.IntegerField()
-    # preparador = models.ForeignKey(Preparador, on_delete=models.CASCADE, null=True)
+    preparador = models.ForeignKey(Usuario, on_delete=models.CASCADE,  blank=True, null=True, related_name="Preparador")
     bodega = models.ForeignKey(Bodega, on_delete=models.CASCADE, blank=True, null=True)
     estado_solicitud = models.CharField(max_length=10, blank=False, null=False, choices=ESTADOS_CHOICES, default=estado_1)
+    observacion = models.CharField(max_length=100, blank=True, null=True, choices=OBSERVACIONES_CHOICES, default=obs_1)
     is_active_solicitud = models.CharField(max_length=10, blank=False, null=False, choices=IS_ACTIVE_CHOICES, default=is_active)
 
     def __str__(self):

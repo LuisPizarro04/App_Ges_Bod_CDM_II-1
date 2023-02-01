@@ -10,6 +10,7 @@ class Unidad_NegocioAdmin(admin.ModelAdmin):
         'nombre_unidad_negocio',
         'is_active_unidad_negocio'
     )
+    search_fields=['id_unidad_negocio']
 # CENTRO DE COSTOS
 class Cetro_CostoAdmin(admin.ModelAdmin):
     list_display = (
@@ -19,6 +20,7 @@ class Cetro_CostoAdmin(admin.ModelAdmin):
         'is_active_centro_costo'
 
     )
+    search_fields=['id_centro_costo']
 #PREPARADOR
 """class PreparadorAdmin(admin.ModelAdmin):
     list_display = (
@@ -34,6 +36,7 @@ class BodegaAdmin(admin.ModelAdmin):
         'nombre_bodega',
         'is_active_bodega'
     )
+    search_fields=['id_bodega']
 #CATEGORIA
 class CategoriaAdmin(admin.ModelAdmin):
     list_display = (
@@ -59,6 +62,8 @@ class Solicitud_RecursoInline(admin.TabularInline):
     autocomplete_fields = ['id_recurso']
 #SOLICITUD
 class SolicitudAdmin(admin.ModelAdmin):
+    search_fields=['unidad_negocio','id_centro_costo','bodega','solicitante', 'preparador']
+    autocomplete_fields=['unidad_negocio','id_centro_costo','bodega','solicitante', 'preparador']
     inlines = [Solicitud_RecursoInline,]
     list_display = (
         'id_solicitud',
@@ -68,11 +73,21 @@ class SolicitudAdmin(admin.ModelAdmin):
         'id_centro_costo',
         'edificio',
         'piso',
-        #'preparador',
+        'preparador',
         'bodega',
         'estado_solicitud',
+        'observacion',
         'is_active_solicitud'
     )
+    fieldsets = (('Datos de la Solicitud', 
+                    {'fields':
+                        (('solicitante', 'fecha_solicitud'), ('unidad_negocio', 'id_centro_costo'), ('edificio', 'piso')),
+                            'classes':'collapse'}),
+                 ('Asignaciones de la solicitud', 
+                    {'fields': 
+                        (('preparador', 'bodega'), ('estado_solicitud', 'observacion', 'is_active_solicitud')),
+                            'classes':'collapse wide'}),)
+    
 """class SolicitudAdmin(admin.ModelAdmin):
     exclude = ('is_active_solicitud',)"""
 # SOLICITUD RECURSO
