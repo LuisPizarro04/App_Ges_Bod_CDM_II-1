@@ -24,6 +24,10 @@ class Unidad_Negocio (models.Model):
 class Centro_Costo (models.Model):
     id_centro_costo = models.AutoField(primary_key=True)
     nombre_centro_costo = models.CharField(max_length=100, blank=False, null=False)
+    crr = models.IntegerField(blank=False, null=False)
+    g_part = models.CharField(max_length=100, blank=False, null=False)
+    cc = models.CharField(max_length=100, blank=False, null=False)
+    comentario = models.CharField(max_length=100, blank=False, null=False)
     is_active_centro_costo = models.CharField(max_length=10, blank=False, null=False, choices=IS_ACTIVE_CHOICES, default=is_active)
     unidad_negocio = models.ForeignKey(Unidad_Negocio, on_delete=models.CASCADE)
 
@@ -107,9 +111,9 @@ class Solicitud (models.Model):
     id_solicitud = models.AutoField(primary_key=True)
     solicitante = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     fecha_solicitud = models.DateField()
-    unidad_negocio = models.ForeignKey(Unidad_Negocio, on_delete=models.CASCADE)
+    #unidad_negocio = models.ForeignKey(Unidad_Negocio, on_delete=models.CASCADE)
     id_centro_costo = models.ForeignKey(Centro_Costo, on_delete=models.CASCADE)
-    edificio = models.IntegerField()
+    #edificio = models.IntegerField()
     piso = models.IntegerField()
     preparador = models.ForeignKey(Usuario, on_delete=models.CASCADE,  blank=True, null=True, related_name="Preparador")
     bodega = models.ForeignKey(Bodega, on_delete=models.CASCADE, blank=True, null=True)

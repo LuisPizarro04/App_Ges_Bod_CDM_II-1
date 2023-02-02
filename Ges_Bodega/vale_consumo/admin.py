@@ -1,24 +1,35 @@
 from django.contrib import admin
+from import_export import resources
+from import_export.admin import ImportExportModelAdmin
 from .models import Unidad_Negocio, Centro_Costo, Bodega, Categoria, Recurso, Solicitud, Solicitud_Recurso
 from usuario.models import  Usuario # Preparador,
 # Register your models here.
 
+class Unidad_NegocioResource(resources.ModelResource):
+    class Meta:
+        model = Unidad_Negocio
+
+
+
 # UNIDAD DE NEGOCIO
-class Unidad_NegocioAdmin(admin.ModelAdmin):
+class Unidad_NegocioAdmin(ImportExportModelAdmin ,admin.ModelAdmin):
     list_display = (
         'id_unidad_negocio',
         'nombre_unidad_negocio',
         'is_active_unidad_negocio'
     )
     search_fields=['id_unidad_negocio']
+    resources_class = Unidad_NegocioResource
 # CENTRO DE COSTOS
 class Cetro_CostoAdmin(admin.ModelAdmin):
     list_display = (
-        'id_centro_costo',
-        'nombre_centro_costo',
         'unidad_negocio',
+        'crr',
+        'nombre_centro_costo',
+        'g_part',
+        'cc',
+        'comentario',
         'is_active_centro_costo'
-
     )
     search_fields=['id_centro_costo']
 #PREPARADOR
@@ -62,16 +73,16 @@ class Solicitud_RecursoInline(admin.TabularInline):
     autocomplete_fields = ['id_recurso']
 #SOLICITUD
 class SolicitudAdmin(admin.ModelAdmin):
-    search_fields=['unidad_negocio','id_centro_costo','bodega','solicitante', 'preparador']
-    autocomplete_fields=['unidad_negocio','id_centro_costo','bodega','solicitante', 'preparador']
+    search_fields=['id_centro_costo','bodega','solicitante', 'preparador']
+    autocomplete_fields=['id_centro_costo','bodega','solicitante', 'preparador']
     inlines = [Solicitud_RecursoInline,]
     list_display = (
         'id_solicitud',
         'solicitante',
         'fecha_solicitud',
-        'unidad_negocio',
+        #'unidad_negocio',
         'id_centro_costo',
-        'edificio',
+        #'edificio',
         'piso',
         'preparador',
         'bodega',
@@ -81,7 +92,7 @@ class SolicitudAdmin(admin.ModelAdmin):
     )
     fieldsets = (('Datos de la Solicitud', 
                     {'fields':
-                        (('solicitante', 'fecha_solicitud'), ('unidad_negocio', 'id_centro_costo'), ('edificio', 'piso')),
+                        (('solicitante', 'fecha_solicitud'), ('id_centro_costo', 'piso')),
                             'classes':'collapse'}),
                  ('Asignaciones de la solicitud', 
                     {'fields': 
