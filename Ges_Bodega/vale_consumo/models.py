@@ -111,7 +111,7 @@ class Solicitud (models.Model):
     id_solicitud = models.AutoField(primary_key=True)
     solicitante = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     fecha_solicitud = models.DateField()
-    #unidad_negocio = models.ForeignKey(Unidad_Negocio, on_delete=models.CASCADE)
+    unidad_negocio = models.ForeignKey(Unidad_Negocio, on_delete=models.CASCADE)
     id_centro_costo = models.ForeignKey(Centro_Costo, on_delete=models.CASCADE)
     #edificio = models.IntegerField()
     piso = models.IntegerField()

@@ -105,10 +105,20 @@ $(function () {
     // event submit
     $('form').on('submit', function (e) {
         e.preventDefault();
+
+        if(vents.items.recursos.length === 0){
+            message_error('Debe al menos tener un item en su detalle de venta');
+            return false;
+        }
         vents.items.solicitante = $('input[name="solicitante"]').val();
         vents.items.fecha_solicitud = $('input[name="fecha_solicitud"]').val();
         var parameters = new FormData()
         parameters.append('action', $('input[name="action"]').val());
-        parameters.append('vents', JSON.stringify(vents.items));        
+        parameters.append('vents', JSON.stringify(vents.items));
+        submit_with_ajax(window.location.pathname, 'Notificación', '¿Estas seguro de realizar la siguiente acción?', parameters, function () {
+            location.href = '/vale_consumo/ListarSolicitud';    
+        });
     });
+    vents.list();
 });
+

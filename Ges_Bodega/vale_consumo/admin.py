@@ -80,7 +80,7 @@ class SolicitudAdmin(admin.ModelAdmin):
         'id_solicitud',
         'solicitante',
         'fecha_solicitud',
-        #'unidad_negocio',
+        'unidad_negocio',
         'id_centro_costo',
         #'edificio',
         'piso',
@@ -92,7 +92,7 @@ class SolicitudAdmin(admin.ModelAdmin):
     )
     fieldsets = (('Datos de la Solicitud', 
                     {'fields':
-                        (('solicitante', 'fecha_solicitud'), ('id_centro_costo', 'piso')),
+                        (('solicitante', 'fecha_solicitud'), ('id_centro_costo', 'unidad_negocio', 'piso')),
                             'classes':'collapse'}),
                  ('Asignaciones de la solicitud', 
                     {'fields': 

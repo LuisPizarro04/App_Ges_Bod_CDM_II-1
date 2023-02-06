@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'vale_consumo',
     'usuario',
     'import_export',
+    'inventario',
 ]
 
 MIDDLEWARE = [
