@@ -3,9 +3,12 @@ var vents = {
     items: {
         solicitante: '',
         fecha_solicitud: '',
+        id_centro_costo:'',
+        unidad_negocio:'',
+        piso:'',
         recursos: []
     },
-    add: function(item){
+    add: function (item) {
         this.items.recursos.push(item);
         this.list();
     },
@@ -83,9 +86,7 @@ $(function () {
         minLength: 1,
         select: function (event, ui) {
             event.preventDefault();
-            console.clear();
             ui.item.cantidad_solicitada = 1;            
-            console.log(vents.items);
             vents.items.recursos.push(ui.item);
             vents.list();
             $(this).val('');
@@ -105,18 +106,18 @@ $(function () {
     // event submit
     $('form').on('submit', function (e) {
         e.preventDefault();
-
-        if(vents.items.recursos.length === 0){
-            message_error('Debe al menos tener un item en su detalle de venta');
-            return false;
-        }
         vents.items.solicitante = $('input[name="solicitante"]').val();
         vents.items.fecha_solicitud = $('input[name="fecha_solicitud"]').val();
-        var parameters = new FormData()
-        parameters.append('action', $('input[name="action"]').val());
+        vents.items.id_centro_costo = $('select[name="id_centro_costo"]').val();
+        vents.items.unidad_negocio = $('select[name="unidad_negocio"]').val();
+        vents.items.piso = $('input[name="piso"]').val();
+
+        var parameters = new FormData();
+        parameters.append('action',$('input[name="action"]').val());
         parameters.append('vents', JSON.stringify(vents.items));
+        console.log(vents.items);
         submit_with_ajax(window.location.pathname, 'Notificación', '¿Estas seguro de realizar la siguiente acción?', parameters, function () {
-            location.href = '/vale_consumo/ListarSolicitud';    
+            location.href = 'vale_consumo/listar_vale.html';
         });
     });
     vents.list();

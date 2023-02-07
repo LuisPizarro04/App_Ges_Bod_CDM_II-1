@@ -128,6 +128,9 @@ class Solicitud (models.Model):
         item = model_to_dict(self)
         item['solicitante'] = self.solicitante.toJSON()
         item['fecha_solicitud'] = self.fecha_solicitud.strftime('%Y-%m-%d')
+        item['unidad_negocio'] = self.unidad_negocio.toJSON()
+        item['id_centro_costo'] = self.id_centro_costo.toJSON()
+        item['piso'] = self.piso.toJSON()
         return item
     class Meta:
         verbose_name = "Solicitud"

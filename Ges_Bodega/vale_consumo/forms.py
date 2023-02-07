@@ -1,11 +1,11 @@
-from django import forms
-from django.forms.widgets import NumberInput
+from django.forms import *
 import datetime
 from .models import Solicitud
 
 
 
-class SolicitudForm(forms.ModelForm):
+
+class SolicitudForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -13,39 +13,29 @@ class SolicitudForm(forms.ModelForm):
         model = Solicitud
         fields = '__all__'
         widgets = {
-            'solicitante': forms.Select(
+            'solicitante': Select(
                 attrs={
                     'class':'form-control',
                     'placeholder':'',
                     'id':'',
                 }
             ),
-            'unidad_negocio': forms.Select(
+            'unidad_negocio': Select(
                 attrs={
                     'class':'form-control ',
                     'placeholder':'',
                     'id':'',
-                    'readonly':'readonly',
+
                 }
             ),
-            'id_centro_costo': forms.Select(
+            'id_centro_costo': Select(
                 attrs={
                     'class':'form-control ',
                     'placeholder':'',
                     'id':'',
                 }
             ),
-            'edificio': forms.TextInput(
-                attrs={
-                    'class':'form-control ',
-                    'placeholder':'',
-                    'id':'',
-                    'type': 'number',
-                    'min':1,
-                    'required':'',
-                }
-            ),
-            'piso': forms.TextInput(
+            'piso': TextInput(
                 attrs={
                     'class':'form-control ',
                     'placeholder':'',
@@ -55,5 +45,5 @@ class SolicitudForm(forms.ModelForm):
                 }
             ),
         }
-    fecha_solicitud = forms.DateField(widget=NumberInput(attrs={'type': 'date', 'class':'form-control ' }), initial=datetime.date.today)
+    fecha_solicitud = DateField(widget=NumberInput(attrs={'type': 'date', 'class':'form-control ' }), initial=datetime.date.today)
 

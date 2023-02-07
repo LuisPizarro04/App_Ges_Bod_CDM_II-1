@@ -32,29 +32,41 @@ class CrearSolicitud(CreateView):
         try:
             action = request.POST['action']
             if action == 'search_products':
+                print("Buscar productos")
                 data = []
                 prods = Recurso.objects.filter(nombre_recurso__icontains=request.POST['term'])
                 for i in prods:
                     item = i.toJSON()
                     item['value'] = i.nombre_recurso
                     data.append(item)
-            elif action == "add":
+            elif action == 'add':
+                print("Boton de guardar")
+                print(vents)
                 vents = json.loads(request.POST['vents'])
                 soli = Solicitud()
                 soli.solicitante = vents['solicitante']
                 soli.fecha_solicitud = vents['fecha_solicitud']
+                soli.id_centro_costo = int(vents['id_centro_costo'])
+                soli.unidad_negocio = int(vents['unidad_negocio'])
+                soli.piso = int(vents['piso'])
                 soli.save()
                 for i in vents['recursos']:
                     sol_rec = Solicitud_Recurso()
                     sol_rec.id_solicitud = soli.id_solicitud
-                    sol_rec.id_recurso = i['id_recurso']
+                    sol_rec.id_recurso = int(i['id_recurso'])
                     sol_rec.cantidad_solicitada = int(i['cantidad_solicitada'])
                     sol_rec.save()
-                
-                
 
             else:
                 data['error'] = 'No ha ingresado a ninguna opción'
         except Exception as e:
             data['error'] = e
         return JsonResponse(data, safe=False)
+        
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        #context['title'] = 'Creación de una Venta'
+        #context['entity'] = 'Ventas'
+        #context['list_url'] = self.success_url
+        context['action'] = 'add'
+        return context
