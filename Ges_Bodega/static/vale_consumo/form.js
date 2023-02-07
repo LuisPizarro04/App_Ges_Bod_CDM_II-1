@@ -115,9 +115,9 @@ $(function () {
         var parameters = new FormData();
         parameters.append('action',$('input[name="action"]').val());
         parameters.append('vents', JSON.stringify(vents.items));
-        console.log(vents.items);
+        
         submit_with_ajax(window.location.pathname, 'Notificación', '¿Estas seguro de realizar la siguiente acción?', parameters, function () {
-            location.href = 'vale_consumo/listar_vale.html';
+            location.href = "{% url 'vale_consumo:listar_solicitud' %}";
         });
     });
     vents.list();

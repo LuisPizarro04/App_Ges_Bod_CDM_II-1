@@ -16,6 +16,11 @@ class Unidad_Negocio (models.Model):
     
     def __str__(self):
         return self.nombre_unidad_negocio
+    
+    def toJSON(self):
+        item = model_to_dict(self)
+        return item
+
     class Meta:
         verbose_name = "Unidad de Negocio"
         verbose_name_plural = "Unidades de Negocios"
@@ -33,6 +38,10 @@ class Centro_Costo (models.Model):
 
     def __str__(self):
         return self.nombre_centro_costo
+    def toJSON(self):
+        item = model_to_dict(self)
+        return item
+
     class Meta:
         verbose_name = "Centro de Costo"
         verbose_name_plural = "Centros de Costos"
@@ -60,6 +69,10 @@ class Categoria (models.Model):
     class Meta:
         verbose_name = "Categoría"
         verbose_name_plural = "Categorías"
+    
+    def toJSON(self):
+        item = model_to_dict(self)
+        return item
 
 #MODELO:RECURSO
 unidad_1 = 'Unidad 1'

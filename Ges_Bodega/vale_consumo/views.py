@@ -41,7 +41,7 @@ class CrearSolicitud(CreateView):
                     data.append(item)
             elif action == 'add':
                 print("Boton de guardar")
-                print(vents)
+                print(data)
                 vents = json.loads(request.POST['vents'])
                 soli = Solicitud()
                 soli.solicitante = vents['solicitante']
