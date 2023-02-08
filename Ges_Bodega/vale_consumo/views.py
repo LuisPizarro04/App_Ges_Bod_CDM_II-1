@@ -41,20 +41,39 @@ class CrearSolicitud(CreateView):
                     data.append(item)
             elif action == 'add':
                 print("Boton de guardar")
-                print(data)
+                print(type(data))
                 vents = json.loads(request.POST['vents'])
+                print(vents)
+                print("ESTE ES EL SOLICITANTE")
+                print(vents['solicitante'])
+                print("-----------------------------------------------------------------------------")
+                print(type(vents['solicitante']))
+                print("-----------------------------------------------------------------------------")
+                id_soli = int(vents['solicitante'])
+                print("-----------------------------------------------------------------------------")
+                print(id_soli)
+                print(type(id_soli))
                 soli = Solicitud()
-                soli.solicitante = vents['solicitante']
+                print("PASA 1")
+                soli.solicitante = id_soli
+                print("PASA 2")
                 soli.fecha_solicitud = vents['fecha_solicitud']
-                soli.id_centro_costo = int(vents['id_centro_costo'])
-                soli.unidad_negocio = int(vents['unidad_negocio'])
-                soli.piso = int(vents['piso'])
+                print("PASA 3")
+                soli.unidad_negocio = vents['unidad_negocio']
+                print("PASA 4")
+                soli.id_centro_costo = vents['id_centro_costo']
+                print("PASA 5")
+                soli.piso = vents['piso']
+                print("PASA 6")
                 soli.save()
+                print("LLEGA AL GUARDADO DE EL ENCABEZADO")
                 for i in vents['recursos']:
+                    # print(soli.id_solicitud)
                     sol_rec = Solicitud_Recurso()
                     sol_rec.id_solicitud = soli.id_solicitud
-                    sol_rec.id_recurso = int(i['id_recurso'])
-                    sol_rec.cantidad_solicitada = int(i['cantidad_solicitada'])
+                    sol_rec.id_recurso = i['id_recurso']
+                    sol_rec.cantidad_solicitada = i['cantidad_solicitada']
+                    sol_rec.estado_despacho ="No realizado"
                     sol_rec.save()
 
             else:

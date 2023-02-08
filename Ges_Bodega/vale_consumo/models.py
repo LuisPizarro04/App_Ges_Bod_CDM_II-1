@@ -130,9 +130,9 @@ class Solicitud (models.Model):
     piso = models.IntegerField()
     preparador = models.ForeignKey(Usuario, on_delete=models.CASCADE,  blank=True, null=True, related_name="Preparador")
     bodega = models.ForeignKey(Bodega, on_delete=models.CASCADE, blank=True, null=True)
-    estado_solicitud = models.CharField(max_length=10, blank=False, null=False, choices=ESTADOS_CHOICES, default=estado_1)
+    estado_solicitud = models.CharField(max_length=10, blank=True, null=True, choices=ESTADOS_CHOICES, default=estado_1)
     observacion = models.CharField(max_length=100, blank=True, null=True, choices=OBSERVACIONES_CHOICES, default=obs_1)
-    is_active_solicitud = models.CharField(max_length=10, blank=False, null=False, choices=IS_ACTIVE_CHOICES, default=is_active)
+    is_active_solicitud = models.CharField(max_length=10, blank=True, null=True, choices=IS_ACTIVE_CHOICES, default=is_active)
 
     def __str__(self):
         return self.solicitante.nombres
